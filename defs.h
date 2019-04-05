@@ -117,7 +117,6 @@ void            wakeup(void*);
 void            wakeup1p(void*);
 void            yield(void);
 
-void            sem_init(void);
 // sem.c
 void            sem_init(void);
 int             create_sem(int);
