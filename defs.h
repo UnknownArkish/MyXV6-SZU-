@@ -114,14 +114,17 @@ void            sleep(void*, struct spinlock*);
 void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
+void            wakeup1p(void*);
 void            yield(void);
 
 void            sem_init(void);
 // sem.c
+void            sem_init(void);
 int             create_sem(int);
 int             sem_p(int);
 int             sem_v(int);
 int             free_sem(int);
+// sem.c for test
 void            sh_var_write(int);
 int             sh_var_read(void);
 
