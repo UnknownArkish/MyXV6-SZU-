@@ -4,5 +4,5 @@
 
 int main(int argc, char** argv){
     printf(1,"My PID is: %d\n", getpid());
-    exit(0);
+    exit();
 }
