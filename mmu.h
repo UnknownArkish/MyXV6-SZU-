@@ -1,5 +1,6 @@
 // This file contains definitions for the
 // x86 memory management unit (MMU).
+// 有关x86中对于内存管理单元的定义
 
 // Eflags register
 #define FL_CF           0x00000001      // Carry Flag
@@ -124,6 +125,7 @@ struct segdesc {
 // Page directory and page table constants.
 #define NPDENTRIES      1024    // # directory entries per page directory
 #define NPTENTRIES      1024    // # PTEs per page table
+// 一页映射的内存（4KB）
 #define PGSIZE          4096    // bytes mapped by a page
 
 #define PGSHIFT         12      // log2(PGSIZE)

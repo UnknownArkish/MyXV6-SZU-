@@ -67,10 +67,12 @@ int sem_p(int sem_index)
     sems[sem_index].resource_count--;
     if (sems[sem_index].resource_count < 0)
     {
+      sems[sem_index].block_proc_len++;
       // 以信号量作为chan进行睡眠，让出资源
       // 使用信号量中的锁，睡眠阻塞时该锁会释放，直到重新调度时
       // 才会重新获得该锁
       sleep(&sems[sem_index], &sems[sem_index].lock);
+      sems[sem_index].block_proc_len--;
     }
   } while (0);
   // 见sleep时解释
@@ -110,9 +112,14 @@ int free_sem(int sem_index)
   int result = 0;
   do
   {
-    // 指定信号量没有分配
+    // 若指定信号量没有分配，则释放失败
     if (sems[sem_index].is_allocated == 0)
     {
+      result = 1;
+      break;
+    }
+    // 如果信号量还有阻塞的进程，则释放失败
+    if( sems[sem_index].block_proc_len > 0 ){
       result = 1;
       break;
     }

@@ -14,8 +14,8 @@ extern char end[]; // first address after kernel loaded from ELF file
 // Bootstrap processor starts running C code here.
 // Allocate a real stack and switch to it, first
 // doing some setup required for memory allocator to work.
-// 操作系统入口
-// 申请一个实际的栈空间并且切换进来，进行一些初始化和内存分配以继续工作
+// 操作系统入口，申请一个实际栈空间并且切换进来
+// 进行一些初始化和内存分配以继续工作
 int
 main(void)
 {
