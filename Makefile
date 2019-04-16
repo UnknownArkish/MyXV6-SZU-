@@ -175,6 +175,7 @@ UPROGS=\
 	_zombie\
 	_app_test_sem_0\
 	_app_test_sem_1\
+	_app_FirstApp\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
