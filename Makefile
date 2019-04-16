@@ -178,6 +178,7 @@ UPROGS=\
 	_app_FirstApp\
 	_app_PrintPid\
 	_app_pcpuid\
+	_app_CheckSche\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
