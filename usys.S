@@ -38,3 +38,4 @@ SYSCALL(free_sem)
 SYSCALL(sh_var_write)
 SYSCALL(sh_var_read)
 
+SYSCALL(getcpuid)

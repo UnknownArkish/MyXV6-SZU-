@@ -48,6 +48,10 @@ int sys_free_sem(void){
   return free_sem(sem_index);
 }
 
+int sys_getcpuid(void){
+  return cpunum();
+}
+
 int
 sys_fork(void)
 {

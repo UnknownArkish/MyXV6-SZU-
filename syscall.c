@@ -112,6 +112,8 @@ extern int sys_free_sem(void);
 extern int sys_sh_var_write(void);
 extern int sys_sh_var_read(void);
 
+extern int sys_getcpuid(void);
+
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -143,15 +145,19 @@ static int (*syscalls[])(void) = {
 // sem_test
 [SYS_sh_var_write]  sys_sh_var_write,
 [SYS_sh_var_read]   sys_sh_var_read,
+
+[SYS_getcpuid]      sys_getcpuid,
 };
+
 
 void
 syscall(void)
 {
   int num;
-
+  // 从eax寄存器中获得系统调用号
   num = proc->tf->eax;
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+    // 调用对应系统调用，将结果赋值给寄存器eax中
     proc->tf->eax = syscalls[num]();
   } else {
     cprintf("%d %s: unknown sys call %d\n",

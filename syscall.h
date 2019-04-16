@@ -28,3 +28,5 @@
 #define SYS_free_sem        25
 #define SYS_sh_var_write    26
 #define SYS_sh_var_read     27
+
+#define SYS_getcpuid        28
