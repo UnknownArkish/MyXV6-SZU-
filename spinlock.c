@@ -21,6 +21,8 @@ initlock(struct spinlock *lk, char *name)
 // Loops (spins) until the lock is acquired.
 // Holding a lock for a long time may cause
 // other CPUs to waste time spinning to acquire it.
+// 尝试对lock进行上锁，将会不断循环直到成功对lock上锁
+// 可能会造成cpu浪费很多时间在对lock尝试acquire上
 void
 acquire(struct spinlock *lk)
 {
@@ -35,6 +37,8 @@ acquire(struct spinlock *lk)
   // Tell the C compiler and the processor to not move loads or stores
   // past this point, to ensure that the critical section's memory
   // references happen after the lock is acquired.
+  // 使用__sync_synchronize保证编译器和cpu在执行时不会打乱指令的执行顺序
+  // 而使得不能按预期中给lk上锁
   __sync_synchronize();
 
   // Record info about lock acquisition for debugging.
@@ -57,6 +61,7 @@ release(struct spinlock *lk)
   // section are visible to other cores before the lock is released.
   // Both the C compiler and the hardware may re-order loads and
   // stores; __sync_synchronize() tells them both to not re-order.
+  // 同上
   __sync_synchronize();
 
   // Release the lock.

@@ -25,6 +25,7 @@ void sem_init(void)
 // 返回-1表示没有空余的信号量
 int create_sem(int res_count)
 {
+  // 需要操作sems数组，因此需要获取sems_lock锁
   acquire(&sems_lock);
   int result = -1;
   // 先判断当前信号量个数是否已经大于最大个数
@@ -32,9 +33,9 @@ int create_sem(int res_count)
   if (sem_count < SEM_MAXIMUM_NUM)
   {
     int i;
-    // 需要操作sems数组，因此需要获取sems_lock锁
     for (i = 0; i < SEM_MAXIMUM_NUM; i++)
     {
+      // 找到第一个尚未分配的信号量
       if (sems[i].is_allocated == 0)
       {
         sems[i].is_allocated = 1;
@@ -92,7 +93,6 @@ int sem_v(int sem_index)
       result = 1;
       break;
     }
-
     sems[sem_index].resource_count++;
     if (sems[sem_index].resource_count <= 0)
     {
@@ -123,7 +123,6 @@ int free_sem(int sem_index)
       result = 1;
       break;
     }
-
     // 进行脏数据的还原
     sems[sem_index].block_proc_len = 0;
     sems[sem_index].resource_count = 0;

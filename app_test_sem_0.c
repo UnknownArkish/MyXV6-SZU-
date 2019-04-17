@@ -54,7 +54,7 @@ void write_sh_var()
     int i;
     for (i = 0; i < WRITE_COUNT_PER_PROCESS; i++)
     {
-        int var = sh_var_read();
-        sh_var_write(var + 1);
+        int var = sh_var_read();        // 取出共享变量
+        sh_var_write(var + 1);          // 对共享变量进行加一操作
     }
 }
