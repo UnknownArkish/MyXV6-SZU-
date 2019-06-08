@@ -34,6 +34,10 @@ int free_sem(int);
 void sh_var_write(int);
 int sh_var_read(void);
 
+// MyAlloc
+void*   Alloc(uint);
+int     Free(void*);
+
 // ulib.c
 int stat(char*, struct stat*);
 char* strcpy(char*, char*);

@@ -101,6 +101,20 @@ sys_sbrk(void)
   return addr;
 }
 
+int sys_Alloc(void){
+  int nbytes;
+  if( argint(0, &nbytes) < 0 )
+    return -1;
+  return ProcAlloc(nbytes);
+}
+int sys_Free(void){
+  int addr;
+  if( argint(0, &addr) < 0 ){
+    return -1;
+  }
+  return ProcFree((void*)addr);
+}
+
 int
 sys_sleep(void)
 {

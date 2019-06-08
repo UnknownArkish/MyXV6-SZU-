@@ -28,6 +28,7 @@ OBJS = \
 	uart.o\
 	vectors.o\
 	vm.o\
+	MyAlloc.o\
 
 # Cross-compiling (e.g., on Mac OS X)
 # TOOLPREFIX = i386-jos-elf
@@ -173,6 +174,8 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_zombie\
+	_app_TestAlloc\
+	_app_TestAllocFork\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

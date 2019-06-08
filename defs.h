@@ -3,6 +3,7 @@ struct context;
 struct file;
 struct inode;
 struct pipe;
+struct VM;
 struct proc;
 struct rtcdate;
 struct spinlock;
@@ -117,6 +118,9 @@ void            wakeup(void*);
 void            wakeup1p(void*);
 void            yield(void);
 
+int             ProcAlloc(int);
+int             ProcFree(void*);
+
 // sem.c
 void            sem_init(void);
 int             create_sem(int);
@@ -126,6 +130,13 @@ int             free_sem(int);
 // sem.c for test
 void            sh_var_write(int);
 int             sh_var_read(void);
+
+// MyAlloc.c
+void            InitMyAlloc();
+void*           Alloc(pde_t*, struct VM*, uint);
+int             Free( pde_t*, struct VM*, void*);
+void            InitProcVM(struct VM*);
+struct VM*      CopyVM( pde_t*, pde_t*, struct VM*);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

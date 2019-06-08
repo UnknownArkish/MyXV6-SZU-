@@ -53,6 +53,19 @@ struct context {
 
 enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 
+struct VMA{
+  int start;          // 起始地址
+  int size;           // 实际大小
+  int page_size;      // 占用的页大小
+
+  struct VMA* next;
+  struct VMA* prev;
+};
+struct VM{
+  struct VMA* header;
+  int vma_count;
+};
+
 // Per-process state
 // 描述每个进程的信息
 struct proc {
@@ -69,6 +82,8 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+
+  struct VM* vm;              // 描述进程动态申请的内存空间
 };
 
 // Process memory is laid out contiguously, low addresses first:

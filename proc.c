@@ -106,6 +106,8 @@ void userinit(void)
   safestrcpy(p->name, "initcode", sizeof(p->name));
   p->cwd = namei("/");
 
+  p->vm = 0;
+
   p->state = RUNNABLE;
 
   release(&ptable.lock);
@@ -131,6 +133,13 @@ int growproc(int n)
   proc->sz = sz;
   switchuvm(proc);
   return 0;
+}
+
+int ProcAlloc(int nbytes){
+  return (int)Alloc(proc->pgdir, proc->vm, nbytes);
+}
+int ProcFree(void* addr){
+  return Free( proc->pgdir, proc->vm, addr );
 }
 
 // Create a new process copying p as the parent.
@@ -172,6 +181,7 @@ int fork(void)
   np->cwd = idup(proc->cwd);
 
   safestrcpy(np->name, proc->name, sizeof(proc->name));
+  np->vm = CopyVM( np->pgdir, proc->pgdir, proc->vm);
 
   pid = np->pid;
 
@@ -508,6 +518,20 @@ void procdump(void)
       for (i = 0; i < 10 && pc[i] != 0; i++)
         cprintf(" %p", pc[i]);
     }
+
+    if( p->vm ){
+      struct VMA* vma = p->vm->header;
+      while( vma ){
+        cprintf("----------------------------\n");
+        cprintf("start: %d\n", vma->start);
+        cprintf("size: %d\n", vma->size);
+        cprintf("page_size: %d\n", vma->page_size);
+        cprintf("----------------------------\n");
+        vma = vma->next;
+      }
+    }
+    
+
     cprintf("\n");
   }
 }

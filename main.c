@@ -31,6 +31,7 @@ main(void)
   uartinit();                                             // serial port
   pinit();                                                // process table
   sem_init();                                             // 用户态信号量初始化
+  InitMyAlloc();                                          // 用户态alloc初始化
   tvinit();                                               // trap vectors
   binit();                                                // buffer cache
   fileinit();                                             // file table

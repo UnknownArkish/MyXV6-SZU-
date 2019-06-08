@@ -114,6 +114,10 @@ extern int sys_sh_var_read(void);
 
 extern int sys_getcpuid(void);
 
+// MyAlloc
+extern int sys_Alloc(void);
+extern int sys_Free(void);
+
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
 [SYS_exit]    sys_exit,
@@ -147,6 +151,10 @@ static int (*syscalls[])(void) = {
 [SYS_sh_var_read]   sys_sh_var_read,
 
 [SYS_getcpuid]      sys_getcpuid,
+
+// MyAlloc
+[SYS_Alloc]         sys_Alloc,
+[SYS_Free]          sys_Free,
 };
 
 

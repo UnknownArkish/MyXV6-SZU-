@@ -39,3 +39,6 @@ SYSCALL(sh_var_write)
 SYSCALL(sh_var_read)
 
 SYSCALL(getcpuid)
+
+SYSCALL(Alloc)
+SYSCALL(Free)

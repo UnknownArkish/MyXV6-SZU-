@@ -41,7 +41,7 @@ seginit(void)
 // Return the address of the PTE in page table pgdir
 // that corresponds to virtual address va.  If alloc!=0,
 // create any required page table pages.
-static pte_t *
+pte_t *
 walkpgdir(pde_t *pgdir, const void *va, int alloc)
 {
   pde_t *pde;
@@ -66,7 +66,7 @@ walkpgdir(pde_t *pgdir, const void *va, int alloc)
 // Create PTEs for virtual addresses starting at va that refer to
 // physical addresses starting at pa. va and size might not
 // be page-aligned.
-static int
+int
 mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 {
   char *a, *last;
@@ -111,16 +111,17 @@ mappages(pde_t *pgdir, void *va, uint size, uint pa, int perm)
 
 // This table defines the kernel's mappings, which are present in
 // every process's page table.
+// 这张表定义了内核的映像，存在于每个进程的页表当中
 static struct kmap {
-  void *virt;
-  uint phys_start;
-  uint phys_end;
-  int perm;
+  void *virt;           // 开始地址（虚址）
+  uint phys_start;      // 开始地址（物理地址）
+  uint phys_end;        // 结束地址（物理地址）
+  int perm;             // 页表权限
 } kmap[] = {
- { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, // I/O space
- { (void*)KERNLINK, V2P(KERNLINK), V2P(data), 0},     // kern text+rodata
- { (void*)data,     V2P(data),     PHYSTOP,   PTE_W}, // kern data+memory
- { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, // more devices
+ { (void*)KERNBASE, 0,             EXTMEM,    PTE_W}, // I/O space       ，IO空间
+ { (void*)KERNLINK, V2P(KERNLINK), V2P(data), 0},     // kern text+rodata，只读代码、数据段
+ { (void*)data,     V2P(data),     PHYSTOP,   PTE_W}, // kern data+memory，数据段
+ { (void*)DEVSPACE, DEVSPACE,      0,         PTE_W}, // more devices    ，外接设备
 };
 
 // Set up kernel part of a page table.
@@ -224,22 +225,25 @@ allocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 {
   char *mem;
   uint a;
-
+  // 如果新分配后的内存空间大于内核起始地址，则失败
   if(newsz >= KERNBASE)
     return 0;
   if(newsz < oldsz)
     return oldsz;
-
+  // 将oldsz进行页大小对齐（上对齐）
   a = PGROUNDUP(oldsz);
   for(; a < newsz; a += PGSIZE){
+    // 每PGSIZE分配一个物理页帧
     mem = kalloc();
     if(mem == 0){
       cprintf("allocuvm out of memory\n");
       deallocuvm(pgdir, newsz, oldsz);
       return 0;
     }
+    // 并对分配得到的物理页帧，进行页表映射，注册到当前进程的页表当中
     memset(mem, 0, PGSIZE);
     if(mappages(pgdir, (char*)a, PGSIZE, V2P(mem), PTE_W|PTE_U) < 0){
+      // 如果映射失败（例如空闲空间不足），则会滚操作
       cprintf("allocuvm out of memory (2)\n");
       deallocuvm(pgdir, newsz, oldsz);
       kfree(mem);
@@ -261,16 +265,19 @@ deallocuvm(pde_t *pgdir, uint oldsz, uint newsz)
 
   if(newsz >= oldsz)
     return oldsz;
-
+  // 对newsz进行页大小对齐（上对齐）
   a = PGROUNDUP(newsz);
   for(; a  < oldsz; a += PGSIZE){
+    // 查找虚拟地址a在页表中的PTE项
     pte = walkpgdir(pgdir, (char*)a, 0);
     if(!pte)
       a += (NPTENTRIES - 1) * PGSIZE;
     else if((*pte & PTE_P) != 0){
+      // 得到PTE项的物理地址
       pa = PTE_ADDR(*pte);
       if(pa == 0)
         panic("kfree");
+      // 对物理地址进行kfree（需要经过P2V转换为内核的虚拟地址）
       char *v = P2V(pa);
       kfree(v);
       *pte = 0;

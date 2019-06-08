@@ -30,3 +30,6 @@
 #define SYS_sh_var_read     27
 
 #define SYS_getcpuid        28
+
+#define SYS_Alloc           29
+#define SYS_Free            30
