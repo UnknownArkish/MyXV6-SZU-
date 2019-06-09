@@ -519,19 +519,14 @@ void procdump(void)
         cprintf(" %p", pc[i]);
     }
 
+    cprintf("\n");
     if( p->vm ){
       struct VMA* vma = p->vm->header;
       while( vma ){
-        cprintf("----------------------------\n");
-        cprintf("start: %d\n", vma->start);
-        cprintf("size: %d\n", vma->size);
-        cprintf("page_size: %d\n", vma->page_size);
-        cprintf("----------------------------\n");
+        cprintf("\t0x%p-0x%p  size: %d\n", 
+            vma->start, vma->start + vma->page_size, vma->size);
         vma = vma->next;
       }
     }
-    
-
-    cprintf("\n");
   }
 }

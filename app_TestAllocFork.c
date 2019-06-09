@@ -14,7 +14,6 @@ void Block(const char* msg){
 }
 
 int main(){
-
     int* addr = Alloc(4 *KB);
     addr[0] = 100;
     int pid = fork();
@@ -22,13 +21,9 @@ int main(){
         printf(0, "error with fork\n");
     }else if( pid == 0 ){
         printf(0, "child's process::addr[0]: %d\n", addr[0]);
-
-        Free(addr);
-        exit();
     }else{
-        Free(addr);
         wait();
-        exit();
     }
-    return 0;
+    Free(addr);
+    exit();
 }

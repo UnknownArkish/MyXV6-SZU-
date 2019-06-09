@@ -59,14 +59,6 @@ void RecycleVMA(struct VMA* vma){
     InitVMA(vma);
 }
 
-// 初始化vm结构体
-void
-InitProcVM(struct VM* vm){
-    vm->header = 0;
-    vm->vma_count = 0;
-}
-
-
 // 初始化Mylloc文件
 void
 InitMyAlloc(){
@@ -84,13 +76,6 @@ InitMyAlloc(){
     for( i = 0; i < vmaTable.total_count; i++ ){
         InitVMA( &vmaTable.storage[i] );
     }
-}
-
-// 拷贝VMA结构体及其内容
-void copyVMA( struct VMA* dest, struct VMA* res ){
-    dest->start = res->start;
-    dest->size = res->size;
-    dest->page_size = res->page_size;
 }
 
 // 拷贝VM结构体，并对VM中的内容进行映射
@@ -158,6 +143,7 @@ void* Alloc(pde_t* pgdir, struct VM* vm, uint nbytes){
         int i;
         for( i = 0 ; i < pageNumNeeded; i++ ){
             char* temp = kalloc();
+            // cprintf("kelloc: %p\n", temp);
             memset(temp, 0, PGSIZE);
             // 映射
             mappages( pgdir, (void*)(vma->start + i * PGSIZE), PGSIZE, V2P(temp), PTE_W | PTE_U );

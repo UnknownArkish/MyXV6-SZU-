@@ -174,7 +174,7 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_zombie\
-	_app_TestAlloc\
+	_app_TestAlloc_2\
 	_app_TestAllocFork\
 
 fs.img: mkfs README $(UPROGS)

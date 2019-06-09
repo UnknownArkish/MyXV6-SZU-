@@ -1,3 +1,11 @@
+/*
+    Alloc测试程序
+        1. Alloc申请测试
+        2. Free空洞测试
+        3. 首次适应算法测试
+*/
+
+
 #include"types.h"
 #include"stat.h"
 #include"user.h"
