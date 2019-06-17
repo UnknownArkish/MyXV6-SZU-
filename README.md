@@ -2,8 +2,7 @@
 该[xv6](https://github.com/mit-pdos/xv6-public)副本用以我在操作系统中的作业
 我使用git工具来为后面的作业做版本控制
 
-由于本人水平有限，而且只是作业的性质，因此可能修改的很糟糕
-但是很欢迎大家一起讨论！
+由于本人水平有限，而且这个副本只是作业的性质，因此可能修改的比较糟糕。因此欢迎大家一起讨论！
 
 This repository is a copy of [xv6](https://github.com/mit-pdos/xv6-public) 
 for my homework in cource(Operating System). I use Git for version control 
