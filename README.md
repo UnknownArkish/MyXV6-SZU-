@@ -1,3 +1,4 @@
+---
 该xv6(https://github.com/mit-pdos/xv6-public)副本用以我在操作系统中的作业
 使用git来控制往后作业的控制流，以进行版本控制
 
@@ -11,9 +12,9 @@ to prevent screwing up
 Because of bad ability, and only the nature of the job, it may be badly 
 modyfied. But welcome to discuss it together!
 
-----------------------------------------------------------
-以下是xv6的原README文档：
-The following is the original README documenet for the xv6:
+---
+### 以下是xv6的原README文档：
+#### The following is the original README documenet for the xv6:
 
 xv6 is a re-implementation of Dennis Ritchie's and Ken Thompson's Unix
 Version 6 (v6).  xv6 loosely follows the structure and style of v6,
